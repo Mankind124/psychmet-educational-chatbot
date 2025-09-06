@@ -3,7 +3,7 @@ name = "psychmet-chatbot"
 version = "0.1.0"
 description = "AI chatbot for psychometric education using RAG"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8,!=3.9.7"
 license = {text = "MIT"}
 authors = [
     {name = "Henry Makinde", email = "hsmakinde@uncg.edu"}
