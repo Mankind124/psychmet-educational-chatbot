@@ -4,7 +4,9 @@ import streamlit as st
 from pathlib import Path
 import logging
 
-from psychmet_chatbot import PsychMetChatbot, DocumentProcessor, VectorStoreManager
+from .chatbot import PsychMetChatbot
+from .document_processor import DocumentProcessor  
+from .vector_store import VectorStoreManager
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
