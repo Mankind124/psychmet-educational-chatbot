@@ -193,13 +193,11 @@ async def run_psychmet_evaluation_example():
     """
     from .chatbot import PsychMetChatbot
     from .vector_store import VectorStoreManager
-    from .document_processor import DocumentProcessor
     
     print("Initializing PsychMet chatbot for evaluation...")
     
     # Initialize components
-    doc_processor = DocumentProcessor()
-    vector_store_manager = VectorStoreManager(doc_processor)
+    vector_store_manager = VectorStoreManager()
     
     # Load or create vector store
     vector_store = vector_store_manager.create_or_load_store()

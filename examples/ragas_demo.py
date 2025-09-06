@@ -17,7 +17,6 @@ from psychmet_chatbot.ragas_integration import (
 )
 from psychmet_chatbot.chatbot import PsychMetChatbot
 from psychmet_chatbot.vector_store import VectorStoreManager
-from psychmet_chatbot.document_processor import DocumentProcessor
 
 
 async def main():
@@ -42,11 +41,8 @@ async def main():
     print("-" * 50)
     
     try:
-        print("📚 Loading document processor...")
-        doc_processor = DocumentProcessor()
-        
-        print("🗃️  Setting up vector store...")
-        vector_store_manager = VectorStoreManager(doc_processor)
+        print("️  Setting up vector store...")
+        vector_store_manager = VectorStoreManager()
         vector_store = vector_store_manager.create_or_load_store()
         
         print("🤖 Initializing chatbot...")

@@ -19,7 +19,6 @@ from psychmet_chatbot.ragas_integration import (
 )
 from psychmet_chatbot.chatbot import PsychMetChatbot
 from psychmet_chatbot.vector_store import VectorStoreManager
-from psychmet_chatbot.document_processor import DocumentProcessor
 
 
 async def run_full_evaluation():
@@ -30,8 +29,7 @@ async def run_full_evaluation():
     try:
         # Initialize chatbot components
         print("📚 Initializing chatbot components...")
-        doc_processor = DocumentProcessor()
-        vector_store_manager = VectorStoreManager(doc_processor)
+        vector_store_manager = VectorStoreManager()
         vector_store = vector_store_manager.create_or_load_store()
         chatbot = PsychMetChatbot(vector_store)
         
@@ -89,8 +87,7 @@ async def run_custom_evaluation(questions_file: str):
             raise ValueError("Questions and ground truths must have same length")
         
         # Initialize components
-        doc_processor = DocumentProcessor()
-        vector_store_manager = VectorStoreManager(doc_processor)
+        vector_store_manager = VectorStoreManager()
         vector_store = vector_store_manager.create_or_load_store()
         chatbot = PsychMetChatbot(vector_store)
         

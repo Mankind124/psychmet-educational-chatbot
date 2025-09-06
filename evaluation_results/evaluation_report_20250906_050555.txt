@@ -1,0 +1,36 @@
+
+RAGAS Evaluation Report
+Generated: 2025-09-06T05:05:55.259254
+Total Examples: 10
+
+=== PERFORMANCE METRICS ===
+Overall Score: 0.399
+
+Faithfulness: 0.247
+  ↳ How well the answer is grounded in retrieved contexts
+
+Answer Relevancy: 0.399
+  ↳ How relevant the answer is to the question
+
+Context Precision: 0.125
+  ↳ Proportion of relevant contexts in retrieval
+
+Context Recall: 0.298
+  ↳ How well contexts cover the ground truth
+
+Context Relevancy: 0.258
+  ↳ Overall relevancy of retrieved contexts
+
+Answer Similarity: 0.505
+  ↳ Semantic similarity to ground truth
+
+Answer Correctness: 1.000
+  ↳ Factual correctness compared to ground truth
+
+=== PERFORMANCE ANALYSIS ===
+❌ NEEDS IMPROVEMENT: System requires significant optimization
+
+=== RECOMMENDATIONS ===
+• Improve answer grounding - reduce hallucinations
+• Enhance retrieval precision - filter irrelevant documents
+• Increase retrieval coverage - retrieve more relevant documents
