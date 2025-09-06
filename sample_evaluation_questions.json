@@ -1,0 +1,16 @@
+{
+  "questions": [
+    "What is reliability in psychological testing?",
+    "Explain the difference between criterion and construct validity.",
+    "What are the different types of reliability coefficients?",
+    "How do you interpret a correlation coefficient of 0.85 in test validation?",
+    "What is the standard error of measurement and how is it calculated?"
+  ],
+  "ground_truths": [
+    "Reliability refers to the consistency and stability of test scores across different conditions, times, or forms. It indicates the degree to which a test produces consistent results when measuring the same construct. High reliability means that if the same person takes the test multiple times under similar conditions, they would get similar scores.",
+    "Criterion validity refers to how well a test predicts or correlates with an external criterion or outcome (like job performance or academic success). Construct validity refers to how well a test measures the theoretical construct or trait it claims to measure (like intelligence or personality). Criterion validity focuses on prediction, while construct validity focuses on theoretical accuracy.",
+    "The main types of reliability coefficients include: 1) Test-retest reliability (stability over time), 2) Internal consistency reliability (Cronbach's alpha, split-half), 3) Inter-rater reliability (agreement between scorers), and 4) Parallel forms reliability (consistency between equivalent test versions). Each type addresses different sources of measurement error.",
+    "A correlation coefficient of 0.85 in test validation indicates a strong positive relationship between the test and the criterion being validated against. This suggests good validity evidence, as 85% of the variance (r² = 0.72) in one measure is associated with the other. Values above 0.70 are generally considered strong evidence for validity.",
+    "The standard error of measurement (SEM) estimates the precision of individual test scores. It's calculated as SEM = SD × √(1 - rₓₓ), where SD is the standard deviation of test scores and rₓₓ is the reliability coefficient. The SEM indicates the range within which a person's true score likely falls, helping interpret score precision."
+  ]
+}

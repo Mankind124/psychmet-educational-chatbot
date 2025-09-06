@@ -16,9 +16,13 @@ logger = logging.getLogger(__name__)
 class PsychMetChatbot:
     """Main chatbot class for psychometric education"""
     
-    def __init__(self):
+    def __init__(self, vector_store=None):
         config.validate()
-        self.vector_manager = VectorStoreManager()
+        if vector_store is None:
+            self.vector_manager = VectorStoreManager()
+            vector_store = self.vector_manager.create_or_load_store()
+        self.vector_store = vector_store
+        
         self.llm = ChatOpenAI(
             model=config.LLM_MODEL,
             temperature=config.TEMPERATURE,
@@ -59,11 +63,9 @@ class PsychMetChatbot:
             input_variables=["context", "question"]
         )
         
-        vector_store = self.vector_manager.create_or_load_store()
-        
         self.qa_chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
-            retriever=vector_store.as_retriever(search_kwargs={"k": 4}),
+            retriever=self.vector_store.as_retriever(search_kwargs={"k": 4}),
             memory=self.memory,
             combine_docs_chain_kwargs={"prompt": PROMPT},
             return_source_documents=True
@@ -80,6 +82,23 @@ class PsychMetChatbot:
             }
         except Exception as e:
             logger.error(f"Error in chat: {e}")
+            return {
+                "answer": f"I encountered an error: {str(e)}",
+                "source_documents": [],
+                "chat_history": []
+            }
+    
+    def get_response_with_context(self, question: str) -> Dict[str, Any]:
+        """Get response with context documents for evaluation purposes"""
+        try:
+            response = self.qa_chain({"question": question})
+            return {
+                "answer": response["answer"],
+                "source_documents": response.get("source_documents", []),
+                "chat_history": self.memory.chat_memory.messages
+            }
+        except Exception as e:
+            logger.error(f"Error in get_response_with_context: {e}")
             return {
                 "answer": f"I encountered an error: {str(e)}",
                 "source_documents": [],
