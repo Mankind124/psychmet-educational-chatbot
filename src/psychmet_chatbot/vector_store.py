@@ -39,9 +39,11 @@ class VectorStoreManager:
             )
             logger.info(f"Loaded existing FAISS index from {config.FAISS_INDEX_PATH}")
         else:
-            # No existing index - will be created when first documents are added
-            logger.info("No existing FAISS index found - will create when documents are added")
-            self.vector_store = None
+            # Create an empty vector store with a dummy document to avoid None
+            dummy_text = ["This is a placeholder document for initializing the vector store."]
+            dummy_metadata = [{"source": "placeholder", "type": "initialization"}]
+            self.vector_store = FAISS.from_texts(dummy_text, self.embeddings, metadatas=dummy_metadata)
+            logger.info("Created new empty FAISS index with placeholder document")
         
         return self.vector_store
     
@@ -56,9 +58,17 @@ class VectorStoreManager:
                 self.vector_store = FAISS.from_texts(texts, self.embeddings, metadatas=metadatas)
                 logger.info(f"Created new FAISS index with {len(documents)} documents")
             else:
-                # Add to existing index
-                self.vector_store.add_texts(texts, metadatas=metadatas)
-                logger.info(f"Added {len(documents)} documents to existing FAISS index")
+                # Check if this is the first real content (replacing placeholder)
+                existing_docs = self.vector_store.similarity_search("", k=1)
+                if (len(existing_docs) == 1 and 
+                    existing_docs[0].metadata.get("type") == "initialization"):
+                    # Replace placeholder with real documents
+                    self.vector_store = FAISS.from_texts(texts, self.embeddings, metadatas=metadatas)
+                    logger.info(f"Replaced placeholder with {len(documents)} real documents")
+                else:
+                    # Add to existing real index
+                    self.vector_store.add_texts(texts, metadatas=metadatas)
+                    logger.info(f"Added {len(documents)} documents to existing FAISS index")
             
             # Save the updated index
             self.vector_store.save_local(str(config.FAISS_INDEX_PATH))
