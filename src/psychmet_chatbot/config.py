@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import streamlit as st
 
 # Load environment variables
 load_dotenv()
@@ -10,8 +11,21 @@ load_dotenv()
 class Config:
     """Application configuration for FAISS-based system"""
     
-    # API Keys
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    # API Keys - Handle both Streamlit secrets and environment variables
+    @classmethod
+    def get_openai_api_key(cls):
+        """Get OpenAI API key from Streamlit secrets or environment variables"""
+        # Try Streamlit secrets first (for cloud deployment)
+        try:
+            if hasattr(st, 'secrets') and 'OPENAI_API_KEY' in st.secrets:
+                return st.secrets['OPENAI_API_KEY']
+        except:
+            pass
+        
+        # Fall back to environment variables (for local development)
+        return os.getenv("OPENAI_API_KEY")
+    
+    OPENAI_API_KEY = get_openai_api_key()
     
     # Model Configuration (updated defaults to match your choices)
     EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")  # Updated default
@@ -45,8 +59,12 @@ class Config:
     @classmethod
     def validate(cls):
         """Validate required configuration"""
-        if not cls.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY not found in environment variables")
+        api_key = cls.get_openai_api_key()
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY not found in environment variables or Streamlit secrets")
+        
+        # Update the class variable with the retrieved key
+        cls.OPENAI_API_KEY = api_key
         
         # Create directories if they don't exist
         cls.FAISS_INDEX_PATH.mkdir(parents=True, exist_ok=True)
